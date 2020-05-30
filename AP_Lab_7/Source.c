@@ -10,7 +10,7 @@ void dateNumberToWords(char* str, FILE* tmp);
 int main(void) 
 {
 	system("chcp 1251");
-	char str[50], ftmpname[] = "tmp file.txt";
+	char str[50], ftmpname[] = "tmpfile.txt";
 	FILE* oldFile, * tmpFile;
 	char* foldname = "date.txt";
 	oldFile = fopen(foldname, "r");
@@ -36,11 +36,24 @@ int main(void)
 
 void dateNumberToWords(char* str, FILE* tmp)
 {
-	char buf[3];
+	char buf[5];
 	char* month[] = { "січня","лютого","березня","квітня","травня","червня","липня","серпня","вересня","жовтня","листопаду","грудня" };
 	buf[0] = str[3];
 	buf[1] = str[4];
 	buf[2] = '\0';
 	int monNumb = atoi(buf);
-	fprintf(tmp, "%c%c %s %c%c%c%c р.\n", str[0], str[1], month[monNumb - 1], str[6], str[7], str[8], str[9]);
+	buf[0] = str[6];
+	buf[1] = str[7];
+	buf[2] = str[8];
+	buf[3] = str[9];
+	buf[4] = '\0';
+	int year = atoi(buf);
+
+	if (year % 4 != 0 || year % 100 == 0 && year % 400 != 0) 
+		fprintf(tmp, "%c%c %s %i р.\n", str[0], str[1], month[monNumb - 1], year);
+	else 
+		fprintf(tmp, "%c%c %s %i р. - високосний\n", str[0], str[1], month[monNumb - 1], year);
+	printf("\n");
+
+	
 }
